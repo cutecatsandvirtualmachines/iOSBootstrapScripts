@@ -1,5 +1,15 @@
 #!/bin/bash
 
+sudo apt update
+sudo apt install -y build-essential meson ninja-build pkg-config \
+                diffutils
+                python3 python3-venv  \
+                libglib2.0-dev libusb-1.0-0-dev libncursesw5-dev \
+                libpixman-1-dev libepoxy-dev libv4l-dev libpng-dev \
+                libsdl2-dev libsdl2-image-dev libgtk-3-dev libgdk-pixbuf2.0-dev \
+                libasound2-dev libpulse-dev \
+                libx11-dev git python3 unzip
+				
 #Download your ipsw from https://ipsw.me/
 
 ipswname=$1
@@ -12,20 +22,13 @@ if [ -z "$ipswname" ]; then
   mv ./iPhone11,8,iPhone12,1_14.0_18A5351d_Restore/ ./iosemu/
 fi
 
-sudo apt update
-sudo apt install -y build-essential meson ninja-build pkg-config \
-                diffutils
-                python3 python3-venv  \
-                libglib2.0-dev libusb-1.0-0-dev libncursesw5-dev \
-                libpixman-1-dev libepoxy-dev libv4l-dev libpng-dev \
-                libsdl2-dev libsdl2-image-dev libgtk-3-dev libgdk-pixbuf2.0-dev \
-                libasound2-dev libpulse-dev \
-                libx11-dev git python3
-
 ./qemubuild.sh
 
 mkdir companion
 mkdir iosemu
+
+curl -LO https://releases.ubuntu.com/jammy/ubuntu-22.04.5-desktop-amd64.iso
+
 
 cd iosemu
 git clone https://github.com/TrungNguyen1909/qemu-t8030-tools.git

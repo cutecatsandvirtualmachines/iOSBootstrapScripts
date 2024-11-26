@@ -1,17 +1,5 @@
 #!/bin/bash
 
-#Download your ipsw from https://ipsw.me/
-
-ipswname=$1
-
-# If the parameter doesn't exist, set a default value
-if [ -z "$ipswname" ]; then
-  ipswname='~/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw'
-  curl -LO https://updates.cdn-apple.com/2020SummerSeed/fullrestores/001-35886/5FE9BE2E-17F8-41C8-96BB-B76E2B225888/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw
-  unzip ./iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw
-  mv ./iPhone11,8,iPhone12,1_14.0_18A5351d_Restore/ ./iosemu/
-fi
-
 sudo apt update
 sudo apt update
 sudo apt install -y build-essential meson ninja-build pkg-config \
@@ -24,6 +12,18 @@ sudo apt install -y build-essential meson ninja-build pkg-config \
                 libx11-dev git libtool-bin libusb-1.0-0-dev libreadline-dev \
 				automake openssh-server ssh curl libfdt-dev zlib1g-dev libtasn1-dev cmake libgnutls28-dev
 			
+#Download your ipsw from https://ipsw.me/
+
+ipswname=$1
+
+# If the parameter doesn't exist, set a default value
+if [ -z "$ipswname" ]; then
+  ipswname='~/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw'
+  curl -LO https://updates.cdn-apple.com/2020SummerSeed/fullrestores/001-35886/5FE9BE2E-17F8-41C8-96BB-B76E2B225888/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw
+  unzip ./iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw
+  mv ./iPhone11,8,iPhone12,1_14.0_18A5351d_Restore/ ./iosemu/
+fi
+
 #libplist			
 git clone https://github.com/libimobiledevice/libplist.git
 cd libplist
