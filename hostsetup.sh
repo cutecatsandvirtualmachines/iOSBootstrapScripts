@@ -34,7 +34,6 @@ elif [[ "$os_type" == "macos" ]]; then
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     fi
 
-    echo "Installing dependencies..."
     brew update
     brew install meson ninja pkg-config \
                 python3 glib libusb ncurses \
