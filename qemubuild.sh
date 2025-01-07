@@ -41,6 +41,14 @@ elif [[ "$os_type" == "macos" ]]; then
                 sdl2 sdl2_image gtk+3 gdk-pixbuf \
                 libx11 git \
                 jtool2 jq coreutils gnutls libgcrypt
+    
+    git clone https://github.com/lzfse/lzfse
+    cd lzfse
+    mkdir build; cd build
+    cmake ..
+    make
+    sudo make install
+    cd ..
 fi
 
 # Clone the QEMUAppleSilicon repository
