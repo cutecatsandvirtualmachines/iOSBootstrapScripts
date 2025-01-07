@@ -44,27 +44,29 @@ elif [[ "$os_type" == "macos" ]]; then
 fi
 				
 #Download your ipsw from https://ipsw.me/
+mkdir iosemu
+mkdir companion
 
 ipswname=$1
 
 # If the parameter doesn't exist, set a default value
 if [ -z "$ipswname" ]; then
+  cd iosemu
   ipswname='$(pwd)/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw'
   curl -LO https://updates.cdn-apple.com/2020SummerSeed/fullrestores/001-35886/5FE9BE2E-17F8-41C8-96BB-B76E2B225888/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw
   unzip $(pwd)/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore.ipsw
-  mv $(pwd)/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore/ $(pwd)/iosemu/
+  cd ..
 fi
 
 chmod 777 ./qemubuild.sh
 $(pwd)/qemubuild.sh
 
-mkdir companion
-mkdir iosemu
-
 if [[ -e "ubuntu-22.04.5-desktop-amd64.iso" ]]; then
     echo "The file 'ubuntu-22.04.5-desktop-amd64.iso' already exists."
 else
+  cd companion
 	curl -LO https://releases.ubuntu.com/jammy/ubuntu-22.04.5-desktop-amd64.iso
+  cd ..
 fi
 
 #First installation for the companion
