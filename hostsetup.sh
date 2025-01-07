@@ -39,7 +39,7 @@ elif [[ "$os_type" == "macos" ]]; then
                 python3 glib libusb ncurses \
                 pixman libepoxy libtasn1 libpng \
                 sdl2 sdl2_image gtk+3 gdk-pixbuf \
-                libx11 git \
+                libx11 git cmake \
                 jtool2 jq coreutils gnutls libgcrypt
 fi
 				
