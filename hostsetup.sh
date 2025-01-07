@@ -55,6 +55,7 @@ if [ -z "$ipswname" ]; then
   mv $(pwd)/iPhone11,8,iPhone12,1_14.0_18A5351d_Restore/ $(pwd)/iosemu/
 fi
 
+chmod 777 ./qemubuild.sh
 $(pwd)/qemubuild.sh
 
 mkdir companion
@@ -81,4 +82,9 @@ cd iosemu
 if [[ ! -d "qemu-t8030-tools" ]]; then
     git clone https://github.com/TrungNguyen1909/qemu-t8030-tools.git
 fi
+
+python3 -m venv ./
+source ./bin/activate
+python3 -m pip install pyasn1
+
 python3 qemu-t8030-tools/bootstrap_scripts/create_apticket.py n104ap BuildManifest.plist qemu-t8030-tools/bootstrap_scripts/ticket.shsh2 root_ticket.der
