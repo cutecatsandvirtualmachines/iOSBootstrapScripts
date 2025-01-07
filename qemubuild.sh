@@ -48,7 +48,7 @@ elif [[ "$os_type" == "macos" ]]; then
     cmake ..
     make
     sudo make install
-    cd ..
+    cd ../..
 fi
 
 git clone https://github.com/ChefKissInc/QEMUAppleSilicon.git
