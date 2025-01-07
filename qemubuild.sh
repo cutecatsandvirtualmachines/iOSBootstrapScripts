@@ -51,17 +51,9 @@ elif [[ "$os_type" == "macos" ]]; then
     cd ..
 fi
 
-# Clone the QEMUAppleSilicon repository
-if [[ ! -d "QEMUAppleSilicon" ]]; then
-    git clone https://github.com/ChefKissInc/QEMUAppleSilicon.git
-fi
-
+git clone https://github.com/ChefKissInc/QEMUAppleSilicon.git
 cd QEMUAppleSilicon
-
-# Initialize and update submodules
-if [[ ! -d ".git/modules" ]]; then
-    git submodule update --init --recursive
-fi
+git submodule update --init --recursive
 
 		
 mkdir build
