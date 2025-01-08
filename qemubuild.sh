@@ -126,8 +126,8 @@ elif [[ "$os_type" == "macos" ]]; then
     cd "./gnutls"
     git submodule update --init --recursive
     ./bootstrap
-    mkdir -p "./gnutls/build"
-    cd "./gnutls/build"
+    mkdir -p "./build"
+    cd "./build"
     # ./configure --disable-doc --disable-guile --disable-nls --disable-tests --disable-tools --disable-valgrind-tests --with-included-libtasn1 --with-included-unistring --without-p11-kit --enable-local-libopts --enable-shared --with-included-libdane --with-included-libnettle --with-included-libunistring --with-included-libidn2 --with-included-libiconv --with-included-libunistring
     ../configure --disable-doc --disable-guile --disable-nls --disable-tests --disable-tools --disable-valgrind-tests --disable-openssl --without-p11-kit --enable-shared
     make -j$(nproc)
