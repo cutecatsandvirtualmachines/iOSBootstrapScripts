@@ -40,7 +40,8 @@ elif [[ "$os_type" == "macos" ]]; then
                 pixman libepoxy libtasn1 libpng \
                 sdl2 sdl2_image gtk+3 gdk-pixbuf \
                 libx11 git cmake \
-                jtool2 jq coreutils gnutls libgcrypt
+                jtool2 jq coreutils libgcrypt autoconf
+    brew uninstall gnutls
     
     git clone https://github.com/lzfse/lzfse
     cd lzfse
@@ -49,14 +50,102 @@ elif [[ "$os_type" == "macos" ]]; then
     make
     sudo make install
     cd ../..
+
+    ######################## Building Nettle ########################
+    # commit 40178e78ae73ec2a8cda8cd53664df9c73ac1961
+    git clone https://gitlab.com/gnutls/nettle.git "${TEMP_DIR}/nettle"
+    cd "${TEMP_DIR}/nettle"
+    git checkout 40178e78ae73ec2a8cda8cd53664df9c73ac1961
+    ./.bootstrap
+    export CFLAGS=" -O2 -fno-stack-check -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk --target=arm64-apple-darwin"
+    export LDFLAGS=" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -arch arm64"
+    ./configure --enable-shared --enable-mini-gmp
+    sudo make -j$(nproc)
+    sudo make install
+    cd -
+
+    ######################## Building Gmp ########################
+    curl -L https://gmplib.org/download/gmp/gmp-6.3.0.tar.xz -o "${TEMP_DIR}/gmp-6.3.0.tar.xz"
+    tar xf "${TEMP_DIR}/gmp-6.3.0.tar.xz" -C "${TEMP_DIR}"
+    cd "${TEMP_DIR}/gmp-6.3.0"
+    export CFLAGS=" -O2 -fno-stack-check -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk --target=arm64-apple-darwin"
+    export LDFLAGS=" -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -arch arm64"
+    ./configure --enable-shared
+    make -j$(nproc)
+    sudo make install
+    cd -
+
+    ######################## Building libev ########################
+    curl -L http://dist.schmorp.de/libev/Attic/libev-4.33.tar.gz -o "${TEMP_DIR}/libev-4.33.tar.gz"
+    tar xf "${TEMP_DIR}/libev-4.33.tar.gz" -C "${TEMP_DIR}"
+    cd "${TEMP_DIR}/libev-4.33"
+    ./configure
+    make -j$(nproc)
+    sudo make install
+    cd -
+
+    ######################## Building Gnutls ########################
+    brew install libtool automake autoconf autogen gtk-doc gmp
+    brew install valgrind nodejs libfaketime lcov  expect softhsm
+    brew install openssl socat net-tools util-linux
+    brew install dash autoconf libtool gettext
+    brew install automake libnettle nettle libunistring
+    brew install libtasn1 libidn2 gawk gperf
+    brew install bison gtk-doc
+    brew install texinfo texlive
+
+    echo 'export PATH="/opt/homebrew/opt/util-linux/bin:$PATH"' >> /Users/xliee/.zshrc
+    echo 'export PATH="/opt/homebrew/opt/util-linux/sbin:$PATH"' >> /Users/xliee/.zshrc
+    echo 'export PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"' >> /Users/xliee/.zshrc
+    echo 'export PKG_CONFIG_PATH="/opt/homebrew/opt/util-linux/lib/pkgconfig"' >> /Users/xliee/.zshrc
+
+    echo 'export PATH="/opt/homebrew/opt/util-linux/bin:$PATH"' >> ~/.bash_profile
+    echo 'export PATH="/opt/homebrew/opt/util-linux/sbin:$PATH"' >> ~/.bash_profile
+    echo 'export PATH="/opt/homebrew/opt/gawk/libexec/gnubin:$PATH"' >> ~/.bash_profile
+    echo 'export PKG_CONFIG_PATH="/opt/homebrew/opt/util-linux/lib/pkgconfig"' >> ~/.bash_profile
+
+    export PATH="/opt/homebrew/opt/bison/bin:$PATH"
+
+    export LDFLAGS="-L/opt/homebrew/opt/util-linux/lib"
+    export CPPFLAGS="-I/opt/homebrew/opt/util-linux/include"
+
+    export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/bison/lib"
+
+    # nettle
+    # export LDFLAGS="$LDFLAGS -L/opt/homebrew/opt/nettle/lib"
+    # export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/opt/nettle/include"
+
+    export LDFLAGS="$LDFLAGS -L/usr/local/lib"
+    export CPPFLAGS="$CPPFLAGS -I/usr/local/include"
+    export LDFLAGS="$LDFLAGS -L/opt/homebrew/lib"
+    export CPPFLAGS="$CPPFLAGS -I/opt/homebrew/include"
+    export LDFLAGS="$LDFLAGS -L/opt/local/lib"
+    export CPPFLAGS="$CPPFLAGS -I/opt/local/include"
+
+    git clone https://gitlab.com/gnutls/gnutls.git "${TEMP_DIR}/gnutls"
+    cd "${TEMP_DIR}/gnutls"
+    git submodule update --init --recursive
+    ./bootstrap
+    mkdir -p "${TEMP_DIR}/gnutls/build"
+    cd "${TEMP_DIR}/gnutls/build"
+    # ./configure --disable-doc --disable-guile --disable-nls --disable-tests --disable-tools --disable-valgrind-tests --with-included-libtasn1 --with-included-unistring --without-p11-kit --enable-local-libopts --enable-shared --with-included-libdane --with-included-libnettle --with-included-libunistring --with-included-libidn2 --with-included-libiconv --with-included-libunistring
+    ../configure --disable-doc --disable-guile --disable-nls --disable-tests --disable-tools --disable-valgrind-tests --disable-openssl --without-p11-kit --enable-shared
+    make -j$(nproc)
+    sudo make install
+    cd -
+
+    echo 'export PATH="/opt/homebrew/opt/m4/bin:$PATH"' >> ~/.zshrc
 fi
 
 git clone https://github.com/ChefKissInc/QEMUAppleSilicon.git
 cd QEMUAppleSilicon
+git switch feat-sep_emu
 git submodule update --init --recursive
 
-		
-mkdir build
-cd build		
-../configure --enable-lzfse --disable-werror --enable-debug #Optional for debugging
-make
+
+brew install clib
+clib install mikepb/endian.h
+mkdir -p "build"
+cd "build"
+../configure --target-list=aarch64-softmmu,x86_64-softmmu --disable-capstone --enable-lzfse --enable-gnutls --enable-nettle --enable-slirp --enable-hvf --disable-werror --extra-cflags="-I/opt/local/include -I/usr/local/include"
+sudo make -j$(nproc)
