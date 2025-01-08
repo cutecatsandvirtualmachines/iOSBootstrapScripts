@@ -40,7 +40,7 @@ elif [[ "$os_type" == "macos" ]]; then
                 pixman libepoxy libtasn1 libpng \
                 sdl2 sdl2_image gtk+3 gdk-pixbuf \
                 libx11 git cmake \
-                jtool2 jq coreutils libgcrypt
+                jtool2 jq coreutils libgcrypt wget
 fi
 				
 #Download your ipsw from https://ipsw.me/
