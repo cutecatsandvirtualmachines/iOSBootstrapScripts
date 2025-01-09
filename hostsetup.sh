@@ -35,12 +35,7 @@ elif [[ "$os_type" == "macos" ]]; then
     fi
 
     brew update
-    brew install meson ninja pkg-config \
-                python3 glib libusb ncurses \
-                pixman libepoxy libtasn1 libpng \
-                sdl2 sdl2_image gtk+3 gdk-pixbuf \
-                libx11 git cmake \
-                jtool2 jq coreutils libgcrypt wget
+    brew install wget
 fi
 				
 #Download your ipsw from https://ipsw.me/

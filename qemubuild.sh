@@ -35,12 +35,6 @@ elif [[ "$os_type" == "macos" ]]; then
     fi
 
     brew update
-    brew install meson ninja pkg-config \
-                python3 glib libusb ncurses \
-                pixman libepoxy libtasn1 libpng \
-                sdl2 sdl2_image gtk+3 gdk-pixbuf \
-                libx11 git cmake \
-                jtool2 jq coreutils libgcrypt autoconf
     brew uninstall gnutls
     
     git clone https://github.com/lzfse/lzfse
@@ -91,7 +85,7 @@ elif [[ "$os_type" == "macos" ]]; then
     brew install dash autoconf libtool gettext
     brew install automake libnettle nettle libunistring
     brew install libtasn1 libidn2 gawk gperf
-    brew install bison gtk-doc
+    brew install bison gtk-doc cmake
     brew install texinfo texlive
 
     echo 'export PATH="/opt/homebrew/opt/util-linux/bin:$PATH"' >> /Users/xliee/.zshrc
@@ -148,5 +142,5 @@ brew install clib
 clib install mikepb/endian.h
 mkdir -p "build"
 cd "build"
-../configure --target-list=aarch64-softmmu,x86_64-softmmu --disable-capstone --enable-lzfse --enable-gnutls --enable-nettle --enable-slirp --enable-hvf --disable-werror --extra-cflags="-I/opt/local/include -I/usr/local/include"
+../configure --disable-capstone --enable-lzfse --enable-gnutls --enable-nettle --enable-slirp --enable-hvf --disable-werror --extra-cflags="-I/opt/local/include -I/usr/local/include"
 sudo make -j$(nproc)
