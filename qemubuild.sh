@@ -133,6 +133,7 @@ elif [[ "$os_type" == "macos" ]]; then
     make -j$(nproc)
     sudo make install
     cd -
+    cd -
 
     echo 'export PATH="/opt/homebrew/opt/m4/bin:$PATH"' >> ~/.zshrc
 fi
