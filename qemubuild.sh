@@ -138,9 +138,7 @@ git switch feat-sep_emu
 git submodule update --init --recursive
 
 
-brew install clib
-clib install mikepb/endian.h
 mkdir -p "build"
 cd "build"
-../configure --disable-capstone --enable-lzfse --enable-gnutls --enable-nettle --enable-slirp --enable-hvf --disable-werror --extra-cflags="-I/opt/local/include -I/usr/local/include"
-sudo make -j$(nproc)
+../configure --disable-capstone --enable-lzfse --enable-nettle --disable-werror
+make -j8
